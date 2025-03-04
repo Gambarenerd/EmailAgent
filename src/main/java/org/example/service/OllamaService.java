@@ -30,12 +30,4 @@ public class OllamaService {
 
         return response.getResult().getOutput().getText();
     }
-
-    public String generateResponseWithTool(){
-        return ChatClient.create(chatModel)
-                .prompt("What day is tomorrow?")
-                .tools(new DateTimeTools())
-                .call()
-                .content();
-    }
 }
