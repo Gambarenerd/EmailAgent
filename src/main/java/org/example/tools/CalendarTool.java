@@ -18,29 +18,24 @@ public class CalendarTool {
         this.calendarService = calendarService;
     }
 
-    @Tool(name = "check_events_by_date", description = "Controlla gli eventi del calendario per una data specifica")
+    @Tool(name = "check_events_by_date", description = "Check calendar event for a specific date")
     public String checkCalendarEvents(@ToolParam String year, @ToolParam String month, @ToolParam String day) throws IOException {
-        System.out.println("[CalendarTool:checkCalendarEvents] Date1: " + year + "-" + month + "-" + day);
 
         int effectiveYear;
         if (year == null || year.isEmpty() || year.equalsIgnoreCase("null")) {
             effectiveYear = LocalDate.now().getYear();
-            System.out.println("[CalendarTool:checkCalendarEvents:if] effectiveYear: " + effectiveYear);
         } else {
             effectiveYear = Integer.parseInt(year);
-            System.out.println("[CalendarTool:checkCalendarEvents:else] effectiveYear: " + effectiveYear);
         }
 
         int monthInt = Integer.parseInt(month);
         int dayInt = Integer.parseInt(day);
 
-        System.out.println("[CalendarTool:checkCalendarEvents] Date2: " + effectiveYear + "-" + month + "-" + day);
-
         LocalDate data = LocalDate.of(effectiveYear, monthInt, dayInt);
         return calendarService.getEventsForDate(data);
     }
 
-    @Tool(name = "create_calendar_event", description = "Crea un evento nel calendario di Google con il titolo, descrizione, data e orario forniti.")
+    @Tool(name = "create_calendar_event", description = "Create an event in Google Calendar with the provided title, description, date, and time.")
     public String createCalendarEvent(
             @ToolParam String summary,
             @ToolParam String description,
@@ -52,13 +47,12 @@ public class CalendarTool {
             @ToolParam int hourEnd,
             @ToolParam int minuteEnd) {
         try {
-            System.out.println("[CalendarTool:createCalendarEvent] Year: " + year);
 
             LocalDateTime startDateTime = LocalDateTime.of(year, month, day, hourStart, minuteStart);
             LocalDateTime endDateTime = LocalDateTime.of(year, month, day, hourEnd, minuteEnd);
             return calendarService.createEvent(summary, description, startDateTime, endDateTime);
         } catch (IOException e) {
-            return "Errore durante la creazione dell'evento: " + e.getMessage();
+            return "Error during calendar event creation: " + e.getMessage();
         }
     }
 }

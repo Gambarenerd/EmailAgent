@@ -60,8 +60,8 @@ public class OllamaService {
     public String generateResponseWithTool(String userPrompt) {
         return ChatClient.create(chatModel)
                 .prompt()
-                .system("Sei un agente intelligente in grado di eseguire dei task come controllare e rispondere alle email, controllare la data di oggi. " +
-                        "Sei in grado di scegliere quale Tool utilizzare analizzando le istruzioni ricevute.")
+                .system("You are an intelligent agent capable of performing tasks such as checking and responding to emails, and verifying today’s date." +
+                        "You can decide which Tool to use by analyzing the received instructions.")
                 .user(userPrompt)
                 .options(OllamaOptions.builder().model(MISTRAL_LARGE_MODEL).temperature(0.4).build())
                 .tools(tools)
@@ -70,7 +70,6 @@ public class OllamaService {
     }
 
     public String processEmail(String userPrompt, String systemPrompt) {
-        System.out.println("[OllamaService:processEmail] processing email");
 
         return ChatClient.create(chatModel)
                 .prompt()
@@ -84,7 +83,6 @@ public class OllamaService {
     }
 
     public String checkCalendar(String userPrompt, String systemPrompt) {
-        System.out.println("[OllamaService:checkCalendar] checking calendar");
 
         return ChatClient.create(chatModel)
                 .prompt()
@@ -100,9 +98,9 @@ public class OllamaService {
     public String generateFriendlyResponse() {
         return ChatClient.create(chatModel)
                 .prompt()
-                .user("Genera una risposta amichevole per il mittente dell'email sulla base delle informazioni precedentemente estratte." +
-                        "Se nel giorno richiesto e presente un altro appuntamento informa il mittente." +
-                        "Se non ci sono appuntamenti per il giorno richiesto informa il mittente.")
+                .user("Generate a friendly response for the email sender based on the previously extracted information." +
+                        "If another appointment is scheduled on the requested date, inform the sender." +
+                        "If no appointments exist for the requested date, inform the sender.")
                 .advisors(chatMemoryAdvisor)
                 .options(OllamaOptions.builder().model(LLAMA_MODEL).temperature(0.4).build())
                 .tools(tools)

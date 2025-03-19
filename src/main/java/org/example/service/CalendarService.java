@@ -50,18 +50,13 @@ public class CalendarService {
         ZonedDateTime start = ZonedDateTime.parse(event.getStart().getDateTime().toStringRfc3339());
         ZonedDateTime end = ZonedDateTime.parse(event.getEnd().getDateTime().toStringRfc3339());
 
-        return String.format("Evento: %s, inizia il %s, termina il %s",
+        return String.format("Event: %s, start on %s, end on %s",
                 event.getSummary(),
                 formatter.format(start),
                 formatter.format(end));
     }
 
     public String createEvent(String summary, String description, LocalDateTime startDateTime, LocalDateTime endDateTime) throws IOException {
-        System.out.println("[CalendarService:createEvent] Event creation started with summary: "
-                + summary + ", description: "
-                + description + ", startDateTime: "
-                + startDateTime + ", endDateTime: "
-                + endDateTime);
 
         Event event = new Event()
                 .setSummary(summary)
@@ -73,9 +68,9 @@ public class CalendarService {
         event.setStart(new EventDateTime().setDateTime(start));
         event.setEnd(new EventDateTime().setDateTime(end));
 
-        event = calendarClient.events().insert("primary", event).execute();
+        calendarClient.events().insert("primary", event).execute();
 
-        return String.format("Evento creato: %s\nDescrizione: %s\nData: %s\nOra inizio: %s\nOra fine: %s",
+        return String.format("Event created: %s\nDescription: %s\nDate: %s\nStarting at: %s\nEnding at: %s",
                 summary,
                 description,
                 startDateTime.toLocalDate(),

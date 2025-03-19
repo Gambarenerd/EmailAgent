@@ -28,8 +28,6 @@ public class GmailService {
 
     public String getLatestEmailFromSender(String senderEmail) {
         try {
-            System.out.println("[GmailService] controllo email da " + senderEmail);
-
             ListMessagesResponse response = gmailService.users().messages().list("me")
                     .setQ("from:" + senderEmail)
                     .setMaxResults(1L)
@@ -37,14 +35,14 @@ public class GmailService {
             List<Message> messages = response.getMessages();
 
             if (messages == null || messages.isEmpty()) {
-                return "Nessuna email trovata da " + senderEmail + ".";
+                return "No email found from " + senderEmail + ".";
             }
 
             Message fullMessage = gmailService.users().messages().get("me", messages.get(0).getId()).execute();
             return fullMessage.getSnippet();
 
         } catch (IOException e) {
-            return "Errore nel recupero dell'email: " + e.getMessage();
+            return "Error retrieving email: " + e.getMessage();
         }
     }
 
@@ -65,10 +63,10 @@ public class GmailService {
 
             gmailService.users().messages().send("me", message).execute();
 
-            return "Email inviata correttamente a " + to;
+            return "Email sent correctly to " + to;
 
         } catch (Exception e) {
-            return "Errore invio email: " + e.getMessage();
+            return "Error sending email: " + e.getMessage();
         }
     }
 }
